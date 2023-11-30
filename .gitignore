@@ -58,7 +58,7 @@ yarn-error.log
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
-
+git remote add origin git@github.com:cuonnd/Tapdev.git
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
