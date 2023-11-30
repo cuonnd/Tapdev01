@@ -12,21 +12,15 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
-  Touchable,
-  TouchableHighlight,
   TouchableNativeFeedback,
   TouchableOpacity,
   useColorScheme,
+  useWindowDimensions,
   View,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -37,6 +31,11 @@ function App(): JSX.Element {
   };
   const animatedValue = useRef(new Animated.Value(0)).current;
   const check = useRef(false);
+  const check2 = useRef(1);
+
+  const {width} = useWindowDimensions();
+  const animatedView1 = useRef(new Animated.Value(0)).current;
+  console.log(animatedView1);
   // const [addres, setAddres] = useState(check);
   const onPressChange = () => {
     Animated.timing(animatedValue, {
@@ -46,6 +45,39 @@ function App(): JSX.Element {
     }).start();
     check.current = !check.current;
   };
+  // Khởi tạo biến để xác định hướng tăng/giảm
+  let daoChieu = true;
+
+  const onPressChangeView = () => {
+    if (daoChieu) {
+      if (check2.current < 2) {
+        Animated.timing(animatedView1, {
+          toValue: -Number(width) * check2.current,
+          duration: 1000,
+          useNativeDriver: false,
+        }).start();
+        check2.current = check2.current + 1;
+        console.log(check2.current, 'check2.current++');
+      } else {
+        daoChieu = false;
+      }
+    }
+
+    if (!daoChieu) {
+      if (check2.current > 0) {
+        Animated.timing(animatedView1, {
+          toValue: -Number(width) * check2.current,
+          duration: 1000,
+          useNativeDriver: false,
+        }).start();
+        check2.current = check2.current - 1;
+        console.log(check2.current, 'check2.current--');
+      } else {
+        daoChieu = true;
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -63,6 +95,7 @@ function App(): JSX.Element {
             borderWidth: 1,
             borderRadius: 20,
             margin: 10,
+            flexDirection: 'row',
           }}>
           <TouchableNativeFeedback onPress={onPressChange}>
             <Animated.View
@@ -74,11 +107,57 @@ function App(): JSX.Element {
                 width: 100,
                 borderRadius: 100 / 2,
                 backgroundColor: 'red',
-                marginLeft: animatedValue,
+                marginLeft: 5,
+                transform: [{translateX: animatedValue}],
               }}
             />
           </TouchableNativeFeedback>
+          <Text>hello</Text>
         </View>
+        <Text>---------------------</Text>
+        <View style={{flexDirection: 'row'}}>
+          <Animated.View
+            style={{
+              width: `100%`,
+              height: 115,
+              backgroundColor: 'red',
+              borderColor: 'red',
+              borderWidth: 1,
+              borderRadius: 20,
+              flexDirection: 'row',
+              transform: [{translateX: animatedView1}],
+            }}
+          />
+          <Animated.View
+            style={{
+              // position: 'absolute',
+              // top: 0,
+              width: `100%`,
+              height: 115,
+              borderColor: 'blue',
+              borderWidth: 1,
+              borderRadius: 20,
+              flexDirection: 'row',
+              transform: [{translateX: animatedView1}],
+            }}
+          />
+          <Animated.View
+            style={{
+              // position: 'absolute',
+              // top: 0,
+              width: `100%`,
+              height: 115,
+              borderColor: 'green',
+              borderWidth: 1,
+              borderRadius: 20,
+              flexDirection: 'row',
+              transform: [{translateX: animatedView1}],
+            }}
+          />
+        </View>
+        <TouchableOpacity onPress={onPressChangeView}>
+          <Text>onpress</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
