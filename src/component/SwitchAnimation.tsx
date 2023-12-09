@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Text,
   TouchableNativeFeedback,
@@ -16,19 +16,20 @@ import Animated, {
 } from 'react-native-reanimated';
 import {TextComponent} from './TextComponent';
 
-export const SwitchAnimation = ({
-  onPressChange,
-  animatedValue,
-  animatedDegView,
-}) => {
+// type Props = {
+//   onPressChange?: () => void;
+//   animatedValue?: Animated.SharedValue<number>;
+//   animatedDegView?: Animated.SharedValue<number>;
+// };
+export const SwitchAnimation = () => {
   const check = useRef(false);
 
   const {width} = useWindowDimensions();
   const progress = useSharedValue(0);
   const opacity = useSharedValue(0);
-  const translateX = useSharedValue(0);
-  const duration = 2000;
-  const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
+  // const translateX = useSharedValue(0);
+  // const duration = 2000;
+  // const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
   const [isShown, setShown] = useState(false);
   const textHeader = 'Lorem ipsum dolor sit';
   const arrTextHeader = textHeader.split(' ') || [];
@@ -51,27 +52,20 @@ export const SwitchAnimation = ({
     });
   };
   const animatedStyle = useAnimatedStyle(() => ({
-    left: progress.value * (width - 130),
+    left: progress.value * (width - 60),
     transform: [
-      {rotate: `${progress.value * 360}deg`},
-      {rotateY: `${progress.value * 360}deg`},
-      {rotateX: `${progress.value * 360}deg`},
-
+      // {rotate: `${progress.value * 360}deg`},
+      // {rotateY: `${progress.value * 360}deg`},
+      // {rotateX: `${progress.value * 360}deg`},
       // {translateX: progress.value * (width - 130)},
     ],
   }));
-  const animatedStyle2 = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
-  const progressText = useSharedValue(0);
-
-  const animatedStyle3 = useAnimatedStyle(() => ({
-    left: progressText.value * (width - 130),
-  }));
+  useEffect(() => {
+    handlePress();
+  }, []);
 
   return (
-    <View style={{flex: 1, position: 'relative'}}>
+    <View style={{width: width, position: 'relative'}}>
       <View style={{position: 'absolute', margin: 15}}>
         <View style={{flexDirection: 'row'}}>
           {arrTextHeader.map((text, index) => (
@@ -84,39 +78,34 @@ export const SwitchAnimation = ({
           ))}
         </View>
       </View>
-      <TouchableNativeFeedback onPress={handlePress}>
-        <View
-          style={{
-            width: width,
-            margin: 10,
-            flexDirection: 'row',
-          }}>
-          <Animated.View
-            style={[
-              {
-                justifyContent: 'center',
-                marginVertical: 5,
-                alignItems: 'center',
-                height: 100,
-                width: 100,
-                backgroundColor: 'red',
-                marginLeft: 5,
-                // transform: [
-                //  {translateX: translateX},
-                //   {rotate: `${deg.value * 360}deg`},
-                // ],
-              },
-              animatedStyle,
-            ]}>
-            <Animated.Text
+      <View
+        style={{
+          width: width,
+          margin: 10,
+          flexDirection: 'row',
+        }}>
+        <Animated.View
+          style={[
+            {
+              justifyContent: 'center',
+              marginVertical: 5,
+              alignItems: 'center',
+              padding: 15,
+              // height: 50,
+              // width: 50,
+              backgroundColor: 'red',
+              marginLeft: 5,
+            },
+            animatedStyle,
+          ]}>
+          {/* <Animated.Text
               style={{
                 color: 'white',
               }}>
               rotate:
-            </Animated.Text>
-          </Animated.View>
-        </View>
-      </TouchableNativeFeedback>
+            </Animated.Text> */}
+        </Animated.View>
+      </View>
     </View>
   );
 };

@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-export const TextComponent = forwardRef(({item, index}, ref) => {
+export const TextComponent = forwardRef(({item, index}: any, ref) => {
   const progress = useSharedValue(0);
 
   const animatedStyle = useAnimatedStyle(

@@ -9,19 +9,37 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen} from './src/screen/HomeScreem';
-
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import TabBar from './src/component/Tabar';
+type RootStackParamList = {
+  Home: undefined;
+  Feed: undefined;
+  Profile: undefined;
+  Settings: undefined;
+};
 function App(): JSX.Element {
   const Stack = createNativeStackNavigator();
 
+  const BottomTab = createBottomTabNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
+      <BottomTab.Navigator tabBar={props => <TabBar {...props} />}>
+        <BottomTab.Screen
+          options={{headerShown: false}}
           name="Home"
           component={HomeScreen}
-          options={{headerShown: false}}
         />
-      </Stack.Navigator>
+        <BottomTab.Screen
+          options={{headerShown: false}}
+          name="Profile"
+          component={HomeScreen}
+        />
+        <BottomTab.Screen
+          options={{headerShown: false}}
+          name="Settings"
+          component={HomeScreen}
+        />
+      </BottomTab.Navigator>
     </NavigationContainer>
   );
 }
